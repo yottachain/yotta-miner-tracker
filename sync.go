@@ -8,10 +8,6 @@ import (
 	"strings"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-
 	"github.com/aurawing/auramq"
 	"github.com/aurawing/auramq/embed"
 	ebclient "github.com/aurawing/auramq/embed/cli"
@@ -23,6 +19,9 @@ import (
 	log "github.com/sirupsen/logrus"
 	ytcrypto "github.com/yottachain/YTCrypto"
 	pb "github.com/yottachain/yotta-miner-tracker/pbtracker"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 //Service sync service
@@ -147,7 +146,7 @@ func syncNode(cli *mongo.Client, node *Node, mqcli auramq.Client, topic string) 
 		if newRatio > 1 {
 			newRatio = 1
 		}
-		cond := bson.M{"nodeid": node.NodeID, "pubkey": node.PubKey, "owner": node.Owner, "profitAcc": node.ProfitAcc, "poolID": node.PoolID, "poolOwner": node.PoolOwner, "quota": node.Quota, "addrs": node.Addrs, "cpu": node.CPU, "memory": node.Memory, "bandwidth": node.Bandwidth, "maxDataSpace": node.MaxDataSpace, "assignedSpace": node.AssignedSpace, "productiveSpace": node.ProductiveSpace, "usedSpace": node.UsedSpace, "weight": node.Weight, "valid": node.Valid, "relay": node.Relay, "status": node.Status, "timestamp": node.Timestamp, "version": node.Version, "rebuilding": node.Rebuilding, "realSpace": node.RealSpace, "tx": node.Tx, "rx": node.Rx, "manualWeight": node.ManualWeight, "stableStat": &StableStatistics{StartTime: oldNode.StableStat.StartTime, Counter: newCounter, Ratio: newRatio}}
+		cond := bson.M{"nodeid": node.NodeID, "pubkey": node.PubKey, "owner": node.Owner, "profitAcc": node.ProfitAcc, "poolID": node.PoolID, "poolOwner": node.PoolOwner, "quota": node.Quota, "addrs": node.Addrs, "cpu": node.CPU, "memory": node.Memory, "bandwidth": node.Bandwidth, "maxDataSpace": node.MaxDataSpace, "assignedSpace": node.AssignedSpace, "productiveSpace": node.ProductiveSpace, "usedSpace": node.UsedSpace, "weight": node.Weight, "valid": node.Valid, "relay": node.Relay, "status": node.Status, "timestamp": node.Timestamp, "version": node.Version, "rebuilding": node.Rebuilding, "realSpace": node.RealSpace, "tx": node.Tx, "rx": node.Rx, "manualWeight": node.ManualWeight, "stableStat": &StableStatistics{StartTime: oldNode.StableStat.StartTime, Counter: newCounter, Ratio: Ratio(newRatio)}}
 		if len(node.Other) > 0 {
 			cond["other"] = node.Other
 		}
