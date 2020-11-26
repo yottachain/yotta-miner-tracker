@@ -2,6 +2,7 @@ package yttracker
 
 import (
 	"encoding/json"
+	"fmt"
 
 	pb "github.com/yottachain/yotta-miner-tracker/pbtracker"
 	"go.mongodb.org/mongo-driver/bson"
@@ -90,9 +91,15 @@ type Node struct {
 
 //StableStatistics struct
 type StableStatistics struct {
-	StartTime int64   `bson:"startTime" json:"startTime"`
-	Counter   int64   `bson:"counter" json:"counter"`
-	Ratio     float32 `bson:"ratio" json:"ratio"`
+	StartTime int64 `bson:"startTime" json:"startTime"`
+	Counter   int64 `bson:"counter" json:"counter"`
+	Ratio     Ratio `bson:"ratio" json:"ratio"`
+}
+
+type Ratio float32
+
+func (f Ratio) MarshalJSON() ([]byte, error) {
+	return []byte(fmt.Sprintf("%f", f)), nil
 }
 
 //NewNode create a node struct
